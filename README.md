@@ -27,19 +27,20 @@
 
 ## Installation 🔨
 
-Foe training and evaluation, please follow the [installation.md](https://github.com/Quit123/PinPoint3D/blob/main/installation.md) to set up the environments.
+For training and evaluation, please follow the [installation.md](https://github.com/Quit123/PinPoint3D/blob/main/installation.md) to set up the environments.
 
 ## Interactive Tool 🎮
 
-Please follow [interSeg3D-Studio
-](https://github.com/SpatialtemporalAI/interSeg3D-Studio/tree/pinpoint3d) to play with the interactive tool yourself. It is a professional annotation platform which designed for PinPoint3D Model.
+Please visit [interSeg3D-Studio
+](https://github.com/SpatialtemporalAI/interSeg3D-Studio/tree/pinpoint3d) to experience the interactive annotation tool. It is a professional annotation platform designed specifically for the PinPoint3D model.
 
 <p align="center">
 <img src="./assets/demo.gif" width="75%" />
 </p>
 
 ## Training 🚀
-We design a new integrated dataset, [PartScan(link gap)](https://drive.google.com/file/d/1Rg2JDjh8iFGKwzP0UMLBCkce7bCvO5-D/view?usp=sharing), by integrating PartNet and ScanNet, and leveraging [PartField](https://github.com/nv-tlabs/PartField) to obtain part-level masks from object point clouds in ScanNet, thereby enhancing the generalization capability of PinPoint3D.
+
+We design a new integrated dataset, PartScan, by integrating PartNet and ScanNet, and leveraging [PartField](https://github.com/nv-tlabs/PartField) to obtain part-level masks from object point clouds in ScanNet, thereby enhancing the generalization capability of PinPoint3D. You can download PartScan from [here(link gap)](https://drive.google.com/file/d/1Rg2JDjh8iFGKwzP0UMLBCkce7bCvO5-D/view?usp=sharing).
 
 The command for training PinPoint3D with iterative training on PartScan is as follows:
 
@@ -50,7 +51,7 @@ The command for training PinPoint3D with iterative training on PartScan is as fo
 
 ## Evaluation 📊
 
-There are two datasets we provided to evaluate. Firstly, we provide a specialized dataset that integrate PartNet with ScanNet, and we evaluate IoU of the original part mask of PartNet in scene. The next is MultiScan, it illustrates not so fancy results because of the granularity.
+There are two datasets we provide for evaluation. Firstly, PartScan, a specialized dataset that integrates PartNet with ScanNet, and we evaluate the IoU of the original PartNet part masks within real-world ScanNet scenes. The second is MultiScan, which shows relatively modest results due to its coarser part granularity. You can download MultiScan from You can download MultiScan from [here(link gap)](https://drive.google.com/file/d/1Rg2JDjh8iFGKwzP0UMLBCkce7bCvO5-D/view?usp=sharing).
 
 We provide the csv result files in the results folder, which can be directly fed into the evaluator for metric calculation. If you want to run the inference and do the evaluation yourself, download the pretrained [model](https://drive.google.com/file/d/1Rg2JDjh8iFGKwzP0UMLBCkce7bCvO5-D/view?usp=sharing) and move it to the weights folder. Then run:
 
