@@ -38,6 +38,16 @@ Please follow [interSeg3D-Studio
 <img src="./assets/demo.gif" width="75%" />
 </p>
 
+## Training 🚀
+We design a new integrated dataset, [PartScan(link gap)](https://drive.google.com/file/d/1Rg2JDjh8iFGKwzP0UMLBCkce7bCvO5-D/view?usp=sharing), by integrating PartNet and ScanNet, and leveraging [PartField](https://github.com/nv-tlabs/PartField) to obtain part-level masks from object point clouds in ScanNet, thereby enhancing the generalization capability of PinPoint3D.
+
+The command for training PinPoint3D with iterative training on PartScan is as follows:
+
+```shell
+./scripts/train_multi.sh
+```
+
+
 ## Evaluation 📊
 
 There are two datasets we provided to evaluate. Firstly, we provide a specialized dataset that integrate PartNet with ScanNet, and we evaluate IoU of the original part mask of PartNet in scene. The next is MultiScan, it illustrates not so fancy results because of the granularity.
