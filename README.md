@@ -40,34 +40,28 @@ Please visit [interSeg3D-Studio
 
 ## Training 🚀
 
-We design a new integrated dataset, PartScan, by integrating PartNet and ScanNet, and leveraging [PartField](https://github.com/nv-tlabs/PartField) to obtain part-level masks from object point clouds in ScanNet, thereby enhancing the generalization capability of PinPoint3D. You can download PartScan from [here(link gap)](https://drive.google.com/file/d/1Rg2JDjh8iFGKwzP0UMLBCkce7bCvO5-D/view?usp=sharing).
+We design a new integrated dataset, PartScan, by integrating PartNet and ScanNet, and leveraging [PartField](https://github.com/nv-tlabs/PartField) to obtain part-level masks from object point clouds in ScanNet, thereby enhancing the generalization capability of PinPoint3D. You can download PartScan from [here](https://drive.google.com/file/d/1ahB1ugwTmGuNrvzHXqkEYerGs15DYSnH/view?usp=drive_link).
 
 The command for training PinPoint3D with iterative training on PartScan is as follows:
 
 ```shell
-./scripts/train_multi.sh
+bash ./scripts/train_multi.sh
 ```
 
 
 ## Evaluation 📊
 
-There are two datasets we provide for evaluation. Firstly, PartScan, a specialized dataset that integrates PartNet with ScanNet, and we evaluate the IoU of the original PartNet part masks within real-world ScanNet scenes. The second is MultiScan, which shows relatively modest results due to its coarser part granularity. You can download MultiScan from You can download MultiScan from [here(link gap)](https://drive.google.com/file/d/1Rg2JDjh8iFGKwzP0UMLBCkce7bCvO5-D/view?usp=sharing).
+There are two datasets we provide for evaluation. Firstly, PartScan, a specialized dataset that integrates PartNet with ScanNet, and we evaluate the IoU of the original PartNet part masks within real-world ScanNet scenes. The second is MultiScan, which shows relatively modest results due to its coarser part granularity. You can download MultiScan from You can download MultiScan from [here](https://drive.google.com/file/d/1QlwEFGIjPmiXG-R-UZweMcqaEFisYu9t/view?usp=drive_link).
 
 We provide the csv result files in the results folder, which can be directly fed into the evaluator for metric calculation. If you want to run the inference and do the evaluation yourself, download the pretrained [model](https://drive.google.com/file/d/1Rg2JDjh8iFGKwzP0UMLBCkce7bCvO5-D/view?usp=sharing) and move it to the weights folder. Then run:
 
-### Evaluation on interactive multi parts 3D segmentation in multi-object:
+### Evaluation on interactive multi parts 3D segmentation 
 
 - PartNet in Scene:
 ```shell
-./scripts/eval_part.sh
+bash ./scripts/eval_extend_val.sh
 ```
 
-### Evaluation on interactive multi parts 3D segmentation in single-object:
-
-- PartNet in Scene:
-```shell
-./scripts/eval_part.sh
-```
 
 ## Citation 🎓
 
