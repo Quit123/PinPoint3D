@@ -45,7 +45,7 @@ We design a new integrated dataset, PartScan, by integrating PartNet and ScanNet
 The command for training PinPoint3D with iterative training on PartScan is as follows:
 
 ```shell
-bash ./scripts/train_multi.sh
+bash ./scripts/train_partscan.sh
 ```
 
 
