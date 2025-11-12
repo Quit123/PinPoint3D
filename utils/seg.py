@@ -44,8 +44,6 @@ def mean_iou(pred, labels):
 def mean_iou_scene(pred, labels):
     """
     Calculate the mean IoU for all target objects in the scene.
-    - labels 中 0 视为背景，不计入
-    返回: (scene_mean_iou: torch.Tensor, iou_dict: dict[int -> float])
     """
     device = pred.device if torch.is_tensor(pred) else None
 
@@ -83,51 +81,12 @@ def mean_iou_scene(pred, labels):
     scene_mean_iou = iou_sum / obj_num
     return scene_mean_iou, iou_dict
 
-# def mean_iou_scene(pred, labels):
-#     """Calculate the mean IoU for all target objects in the scene
-#     """
-#     obj_ids = torch.unique(labels)
-#     obj_ids = obj_ids[obj_ids!=0]
-#     obj_num = len(obj_ids)
-#     iou_sample = 0.0
-#     iou_dict = {}
-#     for obj_id in obj_ids:
-#         obj_iou = mean_iou_single(pred==obj_id, labels==obj_id)
-#         iou_dict[int(obj_id)] = float(obj_iou)
-#         iou_sample += obj_iou
-
-#     # iou_sample /= obj_num
-#     # 加权求IoU
-#     # obj_ids = torch.unique(labels)
-#     # obj_ids = obj_ids[obj_ids!=0]
-#     # total_points = len(labels)
-#     # iou_sample = 0.0
-#     # total_weight = 0
-#     # iou_dict = {}
-#     # for obj_id in obj_ids:
-#     #     mask_gt = (labels == obj_id)
-#     #     obj_points = mask_gt.sum().item()
-#     #     weight = obj_points / total_points
-#     #     obj_iou = mean_iou_single(pred == obj_id, mask_gt)
-#     #     iou_dict[int(obj_id)] = float(obj_iou)
-#     #     iou_sample += obj_iou * weight
-#     #     total_weight += weight
-#     # iou_sample /= total_weight
-
-#     # mask = labels!=0
-#     # iou_dict = {}
-#     # obj_iou = mean_iou_single(pred[mask], labels[mask])
-
-
-#     return obj_iou, iou_dict
-
 
 def loss_weights(points, clicks, tita, alpha, beta):
     """Points closer to clicks have bigger weights. Vice versa.
     """
     pairwise_distances = torch.cdist(points, clicks)
     pairwise_distances, _ = torch.min(pairwise_distances, dim=1)
-    # alpha=0.8   beta=2   tita=0.3
     weights = alpha + (beta-alpha) * (1 - torch.clamp(pairwise_distances, max=tita)/tita)
 
     return weights
@@ -172,30 +131,22 @@ def loss_weights_iter(points, clicks, click_iter, base_tita, alpha, beta, k=0.3,
     M = clicks.shape[0]
     click_iter = torch.tensor(click_iter, device=points.device)
 
-    # 每个点到每个click的距离
-    dists = torch.cdist(points, clicks)  # [N, M]
+    dists = torch.cdist(points, clicks)
 
-    # 每个click根据时间生成半径（越早，半径越大）
-    tita_click = base_tita / (1 + k * click_iter.float())  # [M]
+    tita_click = base_tita / (1 + k * click_iter.float())
 
-    # expand到[N, M]以用于广播
-    tita_matrix = tita_click.unsqueeze(0).expand(N, M)  # [N, M]
+    tita_matrix = tita_click.unsqueeze(0).expand(N, M)
 
-    # 归一化距离，截断最大为1（超过作用范围视为最低权重）
-    norm_dist = torch.clamp(dists / tita_matrix, max=1.0)  # [N, M]
+    norm_dist = torch.clamp(dists / tita_matrix, max=1.0)
 
-    # 基于距离计算每个click对每个点的影响（越近越大）
-    spatial_weights = alpha + (beta - alpha) * (1 - norm_dist)  # [N, M]
+    spatial_weights = alpha + (beta - alpha) * (1 - norm_dist)
 
-    # 每个click的时间权重（越早越大）
-    time_weights = torch.exp(-lambda_t * click_iter.float())  # [M]
-    time_weights = time_weights.unsqueeze(0).expand(N, M)  # [N, M]
+    time_weights = torch.exp(-lambda_t * click_iter.float())
+    time_weights = time_weights.unsqueeze(0).expand(N, M)
 
-    # 融合空间+时间权重
-    total_weights = spatial_weights * time_weights  # [N, M]
+    total_weights = spatial_weights * time_weights
 
-    # 每个点取所有click对它的最大影响力
-    final_weights, _ = torch.max(total_weights, dim=1)  # [N]
+    final_weights, _ = torch.max(total_weights, dim=1)
 
     return final_weights
 
@@ -228,34 +179,12 @@ def cal_click_loss_weights_iter(batch_idx, raw_coords, labels, click_idx, click_
                 continue
             for part_id, click_iter_indices in part_dict.items():
                 all_click_idx_iter.extend(click_iter_indices)
-        # print("all_click_idx:",len(all_click_idx))
-        # print("all_click_idx_iter:",len(all_click_idx_iter))
+
         click_points_sample = raw_coords_sample[all_click_idx]
         weights_sample = loss_weights_iter(raw_coords_sample, click_points_sample, all_click_idx_iter, tita, alpha, beta)
         weights.append(weights_sample)
 
     return weights
-
-
-# 原版
-# def cal_click_loss_weights(batch_idx, raw_coords, labels, click_idx, alpha=0.8, beta=2.0, tita=0.3):
-#     """Calculate the loss weights for each point in the point cloud.
-#     """
-#     weights = []
-
-#     bs = batch_idx.max() + 1
-#     for i in range(bs):
-        
-#         click_idx_sample = click_idx[i]
-#         sample_mask = batch_idx == i
-#         raw_coords_sample = raw_coords[sample_mask]
-#         all_click_idx = [np.array(v) for k,v in click_idx_sample.items()]
-#         all_click_idx = np.hstack(all_click_idx).astype(np.int64).tolist()
-#         click_points_sample = raw_coords_sample[all_click_idx]
-#         weights_sample = loss_weights(raw_coords_sample, click_points_sample, tita, alpha, beta)
-#         weights.append(weights_sample)
-
-#     return weights
 
 
 def get_next_click_coo_torch(discrete_coords, unique_labels, gt, pred, pairwise_distances):
@@ -372,20 +301,15 @@ def measure_error_size(discrete_coords, unique_labels):
     if zero_indices.sum() == 0 or one_indices.sum() == 0:
         return None, None, None, -1, None, None
 
-    # 输出内存使用信息用于调试
     num_zero = zero_indices.sum().item()
     num_one = one_indices.sum().item()
     estimated_memory_gb = (num_zero * num_one * 4) / (1024**3)  # 4 bytes per float32
     
-    # print(f"[DEBUG] measure_error_size: Background points: {num_zero}, Foreground points: {num_one}")
-    # print(f"[DEBUG] Estimated memory for cdist: {estimated_memory_gb:.2f} GB")
-    
-    # 如果估计内存超过阈值，直接跳过计算
-    memory_threshold_gb = 13.0  # 可以根据GPU内存调整
+    memory_threshold_gb = 13.0 
     if estimated_memory_gb > memory_threshold_gb:
         print(f"[WARNING] Memory requirement too large ({estimated_memory_gb:.2f}GB > {memory_threshold_gb}GB), skipping...")
         print(f"[WARNING] This would cause CUDA OOM error!")
-        return None  # 返回None表示跳过这个计算
+        return None
 
     # All distances from foreground points to background points
     pairwise_distances = torch.cdist(discrete_coords[zero_indices, :], discrete_coords[one_indices, :])
@@ -461,19 +385,7 @@ def get_simulated_clicks(pred_qv, labels_qv, coords_qv, labels_shield_qv=None, c
 
     error_mask = torch.abs(pred_label - labels_qv) > 0
 
-    # 加上就是屏蔽区域，bg不允许在object内点击
-    # if labels_shield_qv is not None:
-    #     error_mask = error_mask & (labels_shield_qv == 1)
-
-    # 调试，输出输入点云信息
-    # total_points = coords_qv.shape[0]
-    # error_points = error_mask.sum().item()
-    # print(f"[DEBUG] get_simulated_clicks: Total points: {total_points}, Error points: {error_points}")
-    # 调试，输出输入点云信息
-
     if error_mask.sum() == 0:
-        # print("error_mask:",error_mask)
-        # print("error_mask.sum() == 0")
         return None, None, None, None
 
     cluster_ids = labels_qv * 96 + pred_label * 11
@@ -529,11 +441,6 @@ def get_simulated_clicks_iter(pred_qv, labels_qv, coords_qv, labels_shield_qv=No
 
     error_mask = torch.abs(pred_label - labels_qv) > 0
 
-    # 加上就是屏蔽区域，bg不允许在object内点击
-    # if labels_shield_qv is not None:
-    #     error_mask = error_mask & (labels_shield_qv == 1)
-
-
     if error_mask.sum() == 0:
         return None, None, None, None, None
 
@@ -581,21 +488,6 @@ def get_simulated_clicks_iter(pred_qv, labels_qv, coords_qv, labels_shield_qv=No
  
     return new_clicks, new_click_num, new_click_pos, new_click_time, new_click_iter
 
-
-# 原版
-# def extend_clicks(current_clicks, current_clicks_time, new_clicks, new_click_time):
-#     """
-#     Append new click to existing clicks
-#     """
-
-#     current_click_num = sum([len(c) for c in current_clicks_time.values()])
-
-#     for obj_id, click_ids in new_clicks.items():
-#         current_clicks[obj_id].extend(click_ids)
-#         current_clicks_time[obj_id].extend([t+current_click_num for t in new_click_time[obj_id]])
-
-#     return current_clicks, current_clicks_time
-
 def count_clicks(click_time_dict):
     count = 0
     for v in click_time_dict.values():
@@ -625,10 +517,7 @@ def extend_clicks(current_clicks, current_clicks_time, new_clicks, new_click_tim
     """
 
     current_click_num = count_clicks(current_clicks_time)
-    # print("current_clicks:",current_clicks)
-    # print("current_clicks_time:",current_clicks_time)
-    # print("new_clicks:",new_clicks)
-    # print("new_click_time:",new_click_time)
+
     for encoded_part_id, click_ids in new_clicks.items():
         if encoded_part_id == '0':
             current_clicks[encoded_part_id].extend(click_ids)
@@ -640,8 +529,6 @@ def extend_clicks(current_clicks, current_clicks_time, new_clicks, new_click_tim
                 if part_dict.get(encoded_part_id) is not None:
                     current_clicks[object_id][encoded_part_id].extend(click_ids)
                     current_clicks_time[object_id][encoded_part_id].extend([t+current_click_num for t in new_click_time[encoded_part_id]])
-            # current_clicks[obj_id][str(part_id)].extend(click_ids)
-            # current_clicks_time[obj_id][str(part_id)].extend([t+current_click_num for t in new_click_time[encoded_part_id]])
 
     return current_clicks, current_clicks_time
 
@@ -661,7 +548,7 @@ def extend_clicks_iter(current_clicks, current_clicks_time, current_clicks_iter,
             if len(current_clicks_iter[encoded_part_id]) > 0:
                 current_iter_num = max(current_clicks_iter[encoded_part_id])
             else:
-                current_iter_num = 0  # 该part还没有点击过
+                current_iter_num = 0
             current_clicks_iter[encoded_part_id].extend([t+current_iter_num for t in new_click_iter[encoded_part_id]])
 
         else:
@@ -675,7 +562,7 @@ def extend_clicks_iter(current_clicks, current_clicks_time, current_clicks_iter,
                     if len(current_clicks_iter[object_id][encoded_part_id]) > 0:
                         current_iter_num = max(current_clicks_iter[object_id][encoded_part_id])
                     else:
-                        current_iter_num = 0  # 该part还没有点击过
+                        current_iter_num = 0
                     current_clicks_iter[object_id][encoded_part_id].extend([t+current_iter_num for t in new_click_iter[encoded_part_id]])
 
     return current_clicks, current_clicks_time, current_clicks_iter

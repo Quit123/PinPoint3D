@@ -4,10 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import json
 import os
-"""
-Evaluator for interactive multi-object segmentation
-每个物体在给定次数下的IoU，以及达到指定IoU所需的点击次数
-"""
+
 class EvaluatorMO():
 
 
