@@ -1,7 +1,7 @@
 ﻿<p align="center">
 <h1 align="center">PinPoint3D: Fine-Grained 3D Part Segmentation from a Few Clicks</h1>
 <p align="center">
-<a href="https://github.com/Quit123?tab=repositories"><strong>Bojun Zhang</strong></a>
+<a href="https://github.com/Quit123"><strong>Bojun Zhang</strong></a>
 ,
 <a href="https://github.com/jian-77"><strong>Hangjian Ye</strong></a>
 ,
@@ -80,4 +80,5 @@ url={https://arxiv.org/abs/2509.25970},
 }
 
 ```
+
 
