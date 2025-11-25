@@ -86,6 +86,17 @@ The first table (from the first figure above) compares part-level segmentation p
 |     AGile3D      | MultiScan (all-part)        | 42.1 | 61.2 | 67.5 |
 | **PinPoint3D (Ours)** | MultiScan (all-part)        | 44.4 | **62.7** | **68.1** |
 
+---
+
+Beyond the primary part-segmentation task, we also test whether part-aware modeling impacts object-level segmentation, using PartScan-object and MultiScan (**with all parts merged into one object mask**). PinPoint3D maintains AGILE3D’s object-segmentation performance and even performs better on PartScan-object.
+
+| Method                | Test Dataset | IoU₁  | IoU₃  | IoU₅  |
+|-----------------------|--------------|-------|-------|-------|
+| AGILE3D               | PartScan     | 83.64 | 96.87 | 97.69 |
+| **PinPoint3D (Ours)** | PartScan     | **86.7** | **97.0** | **98.0** |
+| **AGILE3D**               | MultiScan    | **58.46** | **75.04** | **81.02** |
+| PinPoint3D (Ours) | MultiScan    | 57.1 | 72.3 | 78.6 |
+
 
 
 ## Citation 🎓
@@ -105,6 +116,7 @@ url={https://arxiv.org/abs/2509.25970},
 }
 
 ```
+
 
 
 
