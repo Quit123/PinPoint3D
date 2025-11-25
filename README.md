@@ -66,7 +66,7 @@ bash ./scripts/eval_extend_val.sh
 
 We provide two sets of quantitative benchmarks to evaluate PinPoint3D on both **fine-grained part-level segmentation** and **coarse object-level segmentation**.
 
-The first table (from the first figure above) compares part-level segmentation performance across three models: the part-aware baseline **PointSAM**, the predecessor model **AGILE3D**, and our method **PinPoint3D**, evaluated under multi-click settings (IoU@1/3/5).
+The first table compares part-level segmentation performance across three models: the part-aware baseline **PointSAM**, the predecessor model **AGILE3D**, and our method **PinPoint3D**, evaluated under multi-click settings (IoU@1/3/5).
 
 ### Part-level Segmentation Results (SyntheticData & MultiScan)
 
@@ -116,6 +116,7 @@ url={https://arxiv.org/abs/2509.25970},
 }
 
 ```
+
 
 
 
