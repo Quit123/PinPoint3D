@@ -1,0 +1,57 @@
+{
+  "timestamp": "20251125_171052",
+  "execution_time_seconds": 345.3060734272003,
+  "parameters": {
+    "scan_folder": "../data/MultiScan_new",
+    "val_list": "../data/val_list_multiscan.json",
+    "dialations": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "conv1_kernel_size": 5,
+    "bn_momentum": 0.02,
+    "voxel_size": 0.05,
+    "hidden_dim": 128,
+    "dim_feedforward": 1024,
+    "num_heads": 8,
+    "num_decoders": 3,
+    "num_bg_queries": 10,
+    "dropout": 0.0,
+    "pre_norm": false,
+    "normalize_pos_enc": true,
+    "positional_encoding_type": "fourier",
+    "gauss_scale": 1.0,
+    "hlevels": [
+      4
+    ],
+    "shared_decoder": false,
+    "aux": true,
+    "val_batch_size": 1,
+    "device": "cuda",
+    "seed": 42,
+    "output_dir": "../results/Multiscan_val",
+    "num_workers": 1,
+    "checkpoint": "../weights/checkpoint1099.pth",
+    "max_num_clicks": 10,
+    "model_type": "pinpoint3D",
+    "use_fp16": false,
+    "use_amp": true
+  },
+  "results": {
+    "NoC@50": 2.7089352594970575,
+    "NoC@65": 4.932316746923488,
+    "NoC@80": 7.773220973782771,
+    "NoC@85": 8.977153558052434,
+    "NoC@90": 9.633895131086142,
+    "IoU@1": 0.4402141860393258,
+    "IoU@2": 0.5534265992696631,
+    "IoU@3": 0.6078593905617975,
+    "IoU@5": 0.667560647191011
+  },
+  "model_info": {
+    "checkpoint_path": "../weights/checkpoint1099.pth",
+    "model_type": "pinpoint3D"
+  }
+}

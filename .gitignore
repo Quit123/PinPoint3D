@@ -5,3 +5,6 @@ __pycache__/
 *.py[cod]
 *.pth
 *.log
+*.pth
+data/PartScan/
+data/MultiScan_new

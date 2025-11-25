@@ -172,7 +172,7 @@ def Evaluate(model, data_loader, args, device):
 
     instance_counter = 0
     # 创建结果文件记录评估数据
-    results_file = os.path.join(args.output_dir, 'val_results_multi.csv')
+    results_file = os.path.join(args.output_dir, 'val_results.csv')
     f = open(results_file, 'w')
 
     for batched_inputs in metric_logger.log_every(data_loader, 10, header):

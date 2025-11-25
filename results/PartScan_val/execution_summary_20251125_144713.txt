@@ -1,0 +1,23 @@
+Execution Summary - 20251125_144713
+==================================================
+
+Execution Time: 589.93 seconds
+
+Key Parameters:
+  Model Type: pinpoint3D
+  Voxel Size: 0.05
+  Max Clicks: 10
+  Checkpoint: ../weights/checkpoint1099.pth
+  Precision: FP32
+  AMP: Enabled
+
+Results:
+  NoC@50: 2.17816175665826
+  NoC@65: 4.168405535800641
+  NoC@80: 7.212780905962723
+  NoC@85: 8.271817071817072
+  NoC@90: 9.142793317793318
+  IoU@1: 0.49950969231764736
+  IoU@2: 0.6150526741470589
+  IoU@3: 0.6587322420000001
+  IoU@5: 0.6962937813235296
