@@ -62,38 +62,30 @@ We provide the csv result files in the results folder, which can be directly fed
 bash ./scripts/eval_extend_val.sh
 ```
 
+---
+
 We provide two sets of quantitative benchmarks to evaluate PinPoint3D on both **fine-grained part-level segmentation** and **coarse object-level segmentation**.
 
 The first table (from the first figure above) compares part-level segmentation performance across three models: the part-aware baseline **PointSAM**, the predecessor model **AGILE3D**, and our method **PinPoint3D**, evaluated under multi-click settings (IoU@1/3/5).
 
-The second taable evaluates whether this design harms **object-level segmentation**. For this, we test on PartScan-object and MultiScan (**where all parts of each object are merged into a single mask**). Surprisingly, PinPoint3D **retains the object segmentation capability of AGILE3D**, and even **performs better on PartScan-object**.
-
 ### Part-level Segmentation Results (SyntheticData & MultiScan)
 
 
-| Method            | Eval                         | IoU₁ | IoU₃ | IoU₅ |
-|------------------|------------------------------|------|------|------|
-| PointSAM         | SyntheticData (random-part)  | 46.2 | 50.1 | 51.4 |
-| AGile3D          | SyntheticData (random-part)  | 39.8 | 58.4 | 64.9 |
-| **PinPoint3D (Ours)** | SyntheticData (random-part)  | **50.0** | **65.9** | **69.7** |
-| PointSAM         | SyntheticData (all-part)     | 48.4 | 52.6 | 52.7 |
-| AGile3D          | SyntheticData (all-part)     | 39.1 | 61.1 | 66.7 |
-| **PinPoint3D (Ours)** | SyntheticData (all-part)     | **55.8** | **68.4** | **71.3** |
-| PointSAM         | MultiScan (random-part)      | **44.4** | 54.9 | 58.1 |
-| AGile3D          | MultiScan (random-part)      | 40.8 | 59.3 | 66.5 |
-| **PinPoint3D (Ours)** | MultiScan (random-part)      | 44.0 | **60.8** | **66.8** |
-| PointSAM         | MultiScan (all-part)         | **44.9** | 54.0 | 56.1 |
-| AGile3D          | MultiScan (all-part)         | 42.1 | 61.2 | 67.5 |
-| **PinPoint3D (Ours)** | MultiScan (all-part)         | 44.4 | **62.7** | **68.1** |
+|      Method      |            Eval             | IoU₁ | IoU₃ | IoU₅ |
+|:----------------:|:---------------------------:|:----:|:----:|:----:|
+|     PointSAM     | SyntheticData (random-part) | 46.2 | 50.1 | 51.4 |
+|     AGile3D      | SyntheticData (random-part) | 39.8 | 58.4 | 64.9 |
+| **PinPoint3D (Ours)** | SyntheticData (random-part) | **50.0** | **65.9** | **69.7** |
+|     PointSAM     | SyntheticData (all-part)    | 48.4 | 52.6 | 52.7 |
+|     AGile3D      | SyntheticData (all-part)    | 39.1 | 61.1 | 66.7 |
+| **PinPoint3D (Ours)** | SyntheticData (all-part)    | **55.8** | **68.4** | **71.3** |
+|     PointSAM     | MultiScan (random-part)     | **44.4** | 54.9 | 58.1 |
+|     AGile3D      | MultiScan (random-part)     | 40.8 | 59.3 | 66.5 |
+| **PinPoint3D (Ours)** | MultiScan (random-part)     | 44.0 | **60.8** | **66.8** |
+|     PointSAM     | MultiScan (all-part)        | **44.9** | 54.0 | 56.1 |
+|     AGile3D      | MultiScan (all-part)        | 42.1 | 61.2 | 67.5 |
+| **PinPoint3D (Ours)** | MultiScan (all-part)        | 44.4 | **62.7** | **68.1** |
 
-### Object-level Segmentation Results (PartScan-object & MultiScan)
-
-| Method              | Test Dataset | IoU₁  | IoU₃  | IoU₅  |
-|--------------------|--------------|-------|-------|-------|
-| AGILE3D            | PartScan     | 83.64 | 96.87 | 97.69 |
-| **PinPoint3D (Ours)** | PartScan     | **86.7** | **97.0** | **98.0** |
-| AGILE3D            | MultiScan    | 58.46 | 75.04 | 81.02 |
-| **PinPoint3D (Ours)** | MultiScan    | **57.1** | **72.3** | **78.6** |
 
 
 ## Citation 🎓
@@ -113,6 +105,7 @@ url={https://arxiv.org/abs/2509.25970},
 }
 
 ```
+
 
 
 
