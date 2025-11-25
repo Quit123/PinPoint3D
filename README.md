@@ -32,7 +32,7 @@ For training and evaluation, please follow the [installation.md](https://github.
 ## Interactive Tool 🎮
 
 Please visit [interSeg3D-Studio
-](https://github.com/SpatialtemporalAI/interSeg3D-Studio/tree/pinpoint3d) to experience the interactive annotation tool. It is a professional annotation platform designed specifically for the PinPoint3D model.
+](https://github.com/zh-plus/interSeg3D-Studio) to experience the interactive annotation tool. It is a professional annotation platform designed specifically for the PinPoint3D model.
 
 <p align="center">
 <img src="./assets/demo.gif" width="75%" />
@@ -116,6 +116,7 @@ url={https://arxiv.org/abs/2509.25970},
 }
 
 ```
+
 
 
 
